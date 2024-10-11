@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "production": "deno run --allow-net --allow-read --allow-write --allow-env --allow-run main.ts"
+  },
+  "imports": {
+    "@std/fmt": "jsr:@std/fmt@^1.0.2",
+    "@std/fs": "jsr:@std/fs@^1.0.4",
+    "@std/path": "jsr:@std/path@^1.0.6",
+    "discord.js": "npm:discord.js@^14.16.3"
+  }
+}
