@@ -2,8 +2,6 @@ import config from "./config/config.json" with { type : "json"};
 import { Client, Events, Collection, GatewayIntentBits, REST, Routes } from 'npm:discord.js';
 import { bold, brightBlue } from "jsr:@std/fmt/colors";
 import { join } from "jsr:@std/path";
-import { readdirSync } from "jsr:@std/fs";
-
 
 const token = config.discord.token
 const clientId = config.discord.clientId
@@ -13,7 +11,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 
 client.once(Events.ClientReady, readyClient => {
-  console.log(bold(brightBlue(`Ready! Logged in as ${readyClient.user.tag}`)));
+  console.log(bold(brightBlue(`Clefairy is running as ${readyClient.user.tag}`)));
 });
 
 const commands = [];
