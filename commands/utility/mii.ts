@@ -54,7 +54,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         const miiData = await dataResponse.json();
         const { data, pid, images, studio_url_data, ...filteredData } = miiData;
 
-        // Create a mapping for prettier names
+        // Mapping for prettier names
         const prettyNames: { [key: string]: string } = {
             name: 'Name',
             user_id: 'ID',
