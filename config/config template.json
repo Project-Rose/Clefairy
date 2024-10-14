@@ -1,7 +1,6 @@
 {
     "discord" : {
         "token": "ur-token",
-	    "clientId": "ur-clientid",
-	    "guildId": "ur-server-id"
+	    "clientId": "ur-clientid"
     }
 }

@@ -1,11 +1,11 @@
-import config from "./config/config.json" with { type : "json"};
+import config from "./config/config.json" with { type : "json" };
 import { Client, Events, Collection, GatewayIntentBits, REST, Routes } from 'npm:discord.js';
 import { bold, brightBlue } from "jsr:@std/fmt/colors";
 import { join } from "jsr:@std/path";
 
-const token = config.discord.token
-const clientId = config.discord.clientId
-const guildId = config.discord.guildId
+const token = config.discord.token;
+const clientId = config.discord.clientId;
+const guildId = config.discord.guildId; // Optional: only for testing in a specific guild
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
@@ -20,8 +20,6 @@ const commandFolders = [...Deno.readDirSync(foldersPath)].filter(entry => entry.
 
 for (const folder of commandFolders) {
   const commandsPath = join(foldersPath, folder.name);
-
-  // Yes, you'll have to rewrite everything that'd normally just borrow from other node.js bots to Typescript because i'm evil like that
   const commandFiles = [...Deno.readDirSync(commandsPath)].filter(entry => entry.isFile && entry.name.endsWith('.ts'));
 
   for (const file of commandFiles) {
@@ -29,10 +27,9 @@ for (const folder of commandFolders) {
 
     try {
       const command = await import(filePath);
-      
       if ('data' in command && 'execute' in command) {
         client.commands.set(command.data.name, command);
-        commands.push(command.data.toJSON());  
+        commands.push(command.data.toJSON());
       } else {
         console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
       }
@@ -42,29 +39,29 @@ for (const folder of commandFolders) {
   }
 }
 
-
-
 const rest = new REST().setToken(token);
 
 (async () => {
   try {
-    console.log(`Started refreshing ${commands.length} application (/) commands.`);
-
-    const data = await rest.put(
-      Routes.applicationGuildCommands(clientId, guildId),
-      { body: commands },
-    );
-
-    console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    if (guildId) {
+      console.log(`Started refreshing ${commands.length} guild (/) commands for guild ID ${guildId}.`);
+      const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+      console.log(`Successfully reloaded ${data.length} guild application (/) commands.`);
+    } else {
+      console.log(`Started refreshing ${commands.length} global application (/) commands.`);
+      const data = await rest.put(Routes.applicationCommands(clientId), { body: commands });
+      console.log(`Successfully reloaded ${data.length} global application (/) commands.`);
+    }
   } catch (error) {
-    console.error(error);
+    console.error('Error registering commands:', error);
   }
 })();
 
 
 client.on(Events.InteractionCreate, async interaction => {
-  const command = interaction.client.commands.get(interaction.commandName);
+  if (!interaction.isCommand()) return;
 
+  const command = client.commands.get(interaction.commandName);
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`);
     return;
@@ -73,7 +70,7 @@ client.on(Events.InteractionCreate, async interaction => {
   try {
     await command.execute(interaction);
   } catch (error) {
-    console.error(error);
+    console.error(`Error executing command ${interaction.commandName}:`, error);
     if (interaction.replied || interaction.deferred) {
       await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
     } else {
