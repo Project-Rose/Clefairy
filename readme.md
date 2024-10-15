@@ -1,3 +1,11 @@
 # Clefairy
 
-Simple bot made using Discord.JS, Deno, and Typescript plus lots of patience for Project Rosé. To run it, just configure /config/config.template.json, rename it to config.json and run "deno run production".
+Awesome bot made for Project Rosé. 
+
+## Acknowledgments
+
+This project uses code borrowed from Bandwidth:
+
+- [Bandwidth](https://github.com/PretendoNetwork/Bandwidth)
+  - License: AGPLv3
+  - Code used: ./commands/libs/support-codes, ./commands/utility/errorCode.ts

@@ -1,6 +1,5 @@
 import { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js';
 
-
 export const data = new SlashCommandBuilder()
   .setName('mii')
   .setDescription('Fetch a Mii using the Mii-Unsecure API')

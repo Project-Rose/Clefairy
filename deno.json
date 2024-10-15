@@ -4,10 +4,13 @@
     "production": "deno run --allow-net --allow-read --allow-write --allow-env --allow-run main.ts"
   },
   "imports": {
+    "@std/crypto": "jsr:@std/crypto@^1.0.3",
     "@std/fmt": "jsr:@std/fmt@^1.0.2",
     "@std/fs": "jsr:@std/fs@^1.0.4",
     "@std/path": "jsr:@std/path@^1.0.6",
     "buffer": "npm:buffer@^6.0.3",
-    "discord.js": "npm:discord.js@^14.16.3"
+    "crypto": "npm:crypto@^1.0.1",
+    "discord.js": "npm:discord.js@^14.16.3",
+    "sjcl": "npm:sjcl@^1.0.8"
   }
 }
