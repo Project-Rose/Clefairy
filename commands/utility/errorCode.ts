@@ -7,7 +7,7 @@ const WIIU_SUPPORT_CODE_REGEX = /(\b1\d{2}-\d{4}\b)/gm;
  * Check for Wii U error code in the provided text.
  * @param {String} text
  */
-function checkForErrorCode(text) {
+function checkForErrorCode(text: string) {
     const wiiuMatch = text.match(WIIU_SUPPORT_CODE_REGEX);
     if (wiiuMatch) {
         return getWiiUSupportCodeInfo(wiiuMatch[0]);
@@ -16,7 +16,7 @@ function checkForErrorCode(text) {
     return null; // No error code found
 }
 
-function getWiiUSupportCodeInfo(supportCode) {
+function getWiiUSupportCodeInfo(supportCode: string) {
     const [moduleId, descriptionId] = supportCode.split('-');
     const mod = wiiuSupportCodes[moduleId];
 
@@ -50,8 +50,8 @@ export const data = new SlashCommandBuilder()
     .setName('checkerror')
     .setDescription('Check for Wii U support error codes in the provided text.')
     .addStringOption(option =>
-        option.setName('text')
-            .setDescription('The text containing the error code')
+        option.setName('code')
+            .setDescription('The error code you want to fetch')
             .setRequired(true));
 
 export const execute = async (interaction) => {
@@ -61,6 +61,6 @@ export const execute = async (interaction) => {
     if (embed) {
         await interaction.reply({ embeds: [embed] });
     } else {
-        await interaction.reply('No error code detected.');
+        await interaction.reply({content: "Pleas enter a code and try again", ephemeral : true})
     }
 };

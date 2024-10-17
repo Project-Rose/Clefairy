@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
   .setDescription('Reduce a specified number of messages from the channel to atoms')
   .addIntegerOption(option =>
     option.setName('amount')
-      .setDescription('The number of messages to delete')
+      .setDescription('The number of messages to nuke')
       .setRequired(true));
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -25,7 +25,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   if (channel?.isTextBased()) {
     try {
       await channel.bulkDelete(amount, true); // true to filter system/pinned messages
-      await interaction.reply({ content: `Successfully nuked ${amount} messages.` });
+      await interaction.reply({ content: `Successfully nuked ${amount} messages.`, ephemeral: true });
     } catch (error) {
       console.error(error);
       await interaction.reply({ content: 'There was an error trying to reduce the messages in this channel to atoms!', ephemeral: true });

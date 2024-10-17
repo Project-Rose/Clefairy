@@ -90,7 +90,6 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const imageStream = imageResponse.body;
     const attachment = new AttachmentBuilder(imageStream, { name: 'mii.png' });
     const miiData = await dataResponse.json();
-    const { pid, images, studio_url_data, ...filteredData } = miiData;
     const QrData = miiData.data;
 
     const miiQrStream = await generateQrCode(QrData);
