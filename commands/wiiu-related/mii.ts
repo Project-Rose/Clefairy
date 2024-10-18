@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
   SlashCommandBuilder,
 } from "discord.js";
-import { encryptAesCcm } from "../libs/mii.cjs";
+import { encryptAesCcm } from "../../libs/mii.cjs";
 import * as QRCode from "npm:qrcode";
 import { Buffer } from "node:buffer";
 

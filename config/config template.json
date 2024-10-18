@@ -1,6 +1,10 @@
 {
     "discord" : {
         "token": "ur-token",
-	    "clientId": "ur-clientid"
+	    "clientId": "ur-client-id",
+        "guildId": "OPTIONAL/NOT RECOMENDED-guild-id",
+        "reportChannelId": "ur-report-channel-id",
+        "devChatId": "YOUR_DEV_CHANNEL_ID",
+        "modRoleId": "MOD_ROLE_ID"
     }
 }

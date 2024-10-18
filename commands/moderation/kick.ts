@@ -1,5 +1,4 @@
 import {
-  CommandInteraction,
   GuildMember,
   SlashCommandBuilder,
 } from "discord.js";

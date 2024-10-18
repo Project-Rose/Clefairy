@@ -1,5 +1,5 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import wiiuSupportCodes from "../libs/support-codes/index.cjs";
+import wiiuSupportCodes from "../../libs/support-codes/index.cjs";
 
 const WIIU_SUPPORT_CODE_REGEX = /(\b1\d{2}-\d{4}\b)/gm;
 

@@ -1,5 +1,4 @@
 import {
-  PermissionsBitField,
   SlashCommandBuilder,
   TextChannel,
 } from "discord.js";

@@ -2,32 +2,63 @@ import config from "./config/config.json" with { type: "json" };
 import {
   Client,
   Collection,
-  Events,
   GatewayIntentBits,
   REST,
   Routes,
 } from "npm:discord.js";
-import { bold, brightBlue } from "jsr:@std/fmt/colors";
 import { join } from "jsr:@std/path";
+import { brightRed, brightGreen, bold, brightYellow, brightBlack, bgWhite } from "jsr:@std/fmt/colors";
 
+console.log(bgWhite(bold(brightBlack("[STARTED] Started Clefairy - The Amazing Project Rosé Discord Bot"))));
 const token = config.discord.token;
 const clientId = config.discord.clientId;
-const guildId = config.discord.guildId; // Optional: only for testing in a specific guild
+const guildId = config.discord.guildId; 
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-client.commands = new Collection();
-
-client.once(Events.ClientReady, (readyClient) => {
-  console.log(
-    bold(brightBlue(`Clefairy is running as ${readyClient.user.tag}`)),
-  );
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.DirectMessages,
+  ],
 });
+
+client.commands = new Collection();
 
 const commands = [];
 const foldersPath = join(Deno.cwd(), "commands");
 const commandFolders = [...Deno.readDirSync(foldersPath)].filter((entry) =>
   entry.isDirectory
 );
+
+const eventsPath = join(Deno.cwd(), "events");
+const eventFiles = [...Deno.readDirSync(eventsPath)].filter((entry) =>
+  entry.isFile && entry.name.endsWith(".ts") 
+);
+
+for (const file of eventFiles) {
+  const filePath = join(eventsPath, file.name);
+  try {
+    const eventModule = await import(filePath);
+    const event = eventModule.default;
+
+    if (!event || !event.name) {
+      console.error(bold(brightRed(`[ERROR] Failed to load event at ${filePath}:`)));
+      continue;
+    }
+
+    if (event.once) {
+      client.once(event.name, (...args) => event.execute(...args));
+      console.log(bold(brightGreen(`[LOADED] Event loaded: ${event.modulename} (once)`)));
+    } else {
+      client.on(event.name, (...args) => event.execute(...args));
+      console.log(bold(brightGreen(`[LOADED] Event loaded: ${event.modulename}`)));
+    }
+
+  } catch (error) {
+    console.error(bold(brightRed(`[ERROR] Failed to load event at ${filePath}:`)), error);
+  }
+}
 
 for (const folder of commandFolders) {
   const commandsPath = join(foldersPath, folder.name);
@@ -45,11 +76,11 @@ for (const folder of commandFolders) {
         commands.push(command.data.toJSON());
       } else {
         console.log(
-          `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+          bold(yellow(`[ALERT] The command at ${filePath} is missing a required "data" or "execute" property.`)),
         );
       }
     } catch (error) {
-      console.error(`[ERROR] Failed to load command at ${filePath}:`, error);
+      console.error(bold(brightRed(`[ERROR] Failed to load command at ${filePath}:`)), error);
     }
   }
 }
@@ -60,56 +91,29 @@ const rest = new REST().setToken(token);
   try {
     if (guildId) {
       console.log(
-        `Started refreshing ${commands.length} guild (/) commands for guild ID ${guildId}.`,
+        bold(brightYellow(`[ALERT] Started refreshing ${commands.length} guild (/) commands for guild ID ${guildId}.`)),
       );
       const data = await rest.put(
         Routes.applicationGuildCommands(clientId, guildId),
         { body: commands },
       );
       console.log(
-        `Successfully reloaded ${data.length} guild application (/) commands.`,
+        bold(brightYellow(`[ALERT] Successfully reloaded ${data.length} guild application (/) commands.`)),
       );
     } else {
       console.log(
-        `Started refreshing ${commands.length} global application (/) commands.`,
+        (bold(brightYellow(`[ALERT] Started resetting global application (/) commands.`))),
       );
       const data = await rest.put(Routes.applicationCommands(clientId), {
         body: commands,
       });
       console.log(
-        `Successfully reloaded ${data.length} global application (/) commands.`,
+        bold(brightYellow(`[ALERT] Successfully reloaded ${data.length} global application (/) commands.`)),
       );
     }
   } catch (error) {
-    console.error("Error registering commands:", error);
+    console.error(bold(brightRed(`[ERROR] Error registering commands:`)), error);
   }
 })();
-
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-  if (!command) {
-    console.error(`No command matching ${interaction.commandName} was found.`);
-    return;
-  }
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(`Error executing command ${interaction.commandName}:`, error);
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({
-        content: "There was an error while executing this command!",
-        ephemeral: true,
-      });
-    } else {
-      await interaction.reply({
-        content: "There was an error while executing this command!",
-        ephemeral: true,
-      });
-    }
-  }
-});
 
 client.login(token);

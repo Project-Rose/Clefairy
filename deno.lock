@@ -2,6 +2,7 @@
   "version": "4",
   "specifiers": {
     "jsr:@std/fmt@*": "1.0.2",
+    "jsr:@std/fmt@^1.0.2": "1.0.2",
     "jsr:@std/path@*": "1.0.6",
     "npm:discord.js@*": "14.16.3",
     "npm:discord.js@^14.16.3": "14.16.3",
