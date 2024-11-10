@@ -1,0 +1,7 @@
+{
+    "discord" : {
+        "token": "",
+	    "clientId": "",
+        "reportChannelId": "ur channel id here"
+    }
+}
