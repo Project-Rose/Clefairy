@@ -35,7 +35,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   }
 
   const reportChannel = interaction.guild?.channels.cache.get(
-    config.default.discord.reportChannelId,
+    config.discord.reportChannelId,
   ) as TextChannel;
 
   if (reportChannel && reportChannel.type === ChannelType.GuildText) {

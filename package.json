@@ -1,6 +1,9 @@
 {
   "name": "clefairy",
   "module": "index.ts",
+  "scripts": {
+    "start": "bun index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

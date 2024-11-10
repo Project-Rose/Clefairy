@@ -21,6 +21,7 @@ export const data = new SlashCommandBuilder()
         { name: "Wii U/Miiverse", value: "wiiu" },
         { name: "Switch", value: "switch" },
         { name: "Miitomo", value: "miitomo" },
+        { name: "Blinn (Wii Kareoke U render)", value: "blinn"}
       )
   )
   .addStringOption((option) =>
@@ -104,10 +105,17 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     });
   }
 
-  const shaderType = { wiiu: 3, miitomo: 2, switch: 1 }[miiRender] || 3;
+  const shaderNumber: number = { blinn: 3, miitomo: 2, switch: 1  }[miiRender] || 3;
+  let shaderType: string
+
+  if (miiRender === 'wiiu') {
+     shaderType = '';
+  } else {
+    shaderType = `&shaderType=${shaderNumber}`
+  }
 
   const miiImageURL =
-    `https://mii-unsecure.ariankordi.net/miis/image.png?nnid=${nid}&api_id=${api_id}&type=${miiType}&width=1080&expression=${miiExpression}&shaderType=${shaderType}`;
+    `https://mii-unsecure.ariankordi.net/miis/image.png?nnid=${nid}&api_id=${api_id}&type=${miiType}&width=1080&expression=${miiExpression}${shaderType}`;
   const miiDataURL =
     `https://mii-unsecure.ariankordi.net/mii_data/${nid}?api_id=${api_id}`;
 
