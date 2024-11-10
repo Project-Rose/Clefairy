@@ -1,5 +1,6 @@
 # clefairy
 
+Our lovely in-house bot. Made by Project Rosé for Project Rosé
 To install dependencies:
 
 ```bash
