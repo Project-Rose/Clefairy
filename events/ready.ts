@@ -1,5 +1,5 @@
-import { Events } from "npm:discord.js"; 
-import { bold, brightGreen } from "jsr:@std/fmt/colors";
+import { Events } from "discord.js"; 
+import { bold, brightGreen } from "@std/fmt/colors";
 
 export default {
   modulename : "Initial/Loader Event Listener",

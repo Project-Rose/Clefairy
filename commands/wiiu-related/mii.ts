@@ -5,8 +5,8 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { encryptAesCcm } from "../../libs/mii.cjs";
-import * as QRCode from "npm:qrcode";
-import { Buffer } from "node:buffer";
+import * as QRCode from "qrcode";
+import { Buffer } from "buffer";
 
 export const data = new SlashCommandBuilder()
   .setName("mii")

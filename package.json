@@ -1,0 +1,20 @@
+{
+  "name": "clefairy",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@std/fmt": "npm:@jsr/std__fmt",
+    "@std/path": "npm:@jsr/std__path",
+    "buffer": "^6.0.3",
+    "chalk": "^5.3.0",
+    "discord.js": "^14.16.3",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "qrcode": "^1.5.4"
+  }
+}

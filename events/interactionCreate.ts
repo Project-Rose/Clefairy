@@ -1,5 +1,5 @@
-import { Events } from "npm:discord.js";
-import { bold, brightRed } from "jsr:@std/fmt/colors";
+import { Events } from "discord.js";
+import { bold, brightRed } from "@std/fmt/colors";
 
 export default {
   modulename : "interactionCreate Event Listener",
